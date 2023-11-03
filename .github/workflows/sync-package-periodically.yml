@@ -32,6 +32,7 @@ jobs:
         run: |
             new_branch="update-metadata-${{ github.run_id }}"
             git checkout -b "$new_branch"
+            echo "new_branch=$(git branch --show-current)" >> $GITHUB_ENV
 
       - name: Sync Package metadata
         run: scripts/syncMetadata.sh
