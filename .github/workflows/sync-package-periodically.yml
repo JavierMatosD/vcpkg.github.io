@@ -53,6 +53,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const repositoryFullName = process.env.GITHUB_REPOSITORY; // 'owner/repo'
+            const [owner, repo] = repositoryFullName.split('/');
             const output = {
                 title: "Update Package Metadata",
                 body: "This PR was automatically created by a GitHub Action triggered by a schedule. It updates the package metadata and website content.",
