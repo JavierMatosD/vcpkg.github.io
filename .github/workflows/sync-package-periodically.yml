@@ -52,12 +52,10 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `
-              {
+            const output = {
                 title: "Update Package Metadata",
                 body: "This PR was automatically created by a GitHub Action triggered by a schedule. It updates the package metadata and website content.",
                 head: "${{ github.actor }}:${{ env.new_branch }}",
                 base: "main"
-              }
-            `;
+              };
             github.rest.pulls.create(output);
