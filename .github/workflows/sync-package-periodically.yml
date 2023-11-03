@@ -55,10 +55,14 @@ jobs:
           script: |
             const repositoryFullName = process.env.GITHUB_REPOSITORY; // 'owner/repo'
             const [owner, repo] = repositoryFullName.split('/');
+            const actor = process.env.GITHUB_ACTOR;
+            const newBranch = process.env.NEW_BRANCH;
             const output = {
                 title: "Update Package Metadata",
                 body: "This PR was automatically created by a GitHub Action triggered by a schedule. It updates the package metadata and website content.",
-                head: "${{ github.actor }}:${{ env.new_branch }}",
+                head: `${actor}:${new_branch}`,
                 base: "main"
               };
             github.rest.pulls.create(output);
+        env:
+          NEW_BRANCH:  ${{ env.new_branch }}
