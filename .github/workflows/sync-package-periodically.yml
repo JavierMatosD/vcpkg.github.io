@@ -58,6 +58,8 @@ jobs:
             const actor = process.env.GITHUB_ACTOR;
             const newBranch = process.env.NEW_BRANCH;
             const output = {
+                owner: owner,
+                repo: repo,
                 title: "Update Package Metadata",
                 body: "This PR was automatically created by a GitHub Action triggered by a schedule. It updates the package metadata and website content.",
                 head: `${actor}:${newBranch}`,
