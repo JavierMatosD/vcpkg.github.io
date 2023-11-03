@@ -60,9 +60,9 @@ jobs:
             const output = {
                 title: "Update Package Metadata",
                 body: "This PR was automatically created by a GitHub Action triggered by a schedule. It updates the package metadata and website content.",
-                head: `${actor}:${new_branch}`,
+                head: `${actor}:${newBranch}`,
                 base: "main"
               };
-            github.rest.pulls.create(output);
+            await github.rest.pulls.create(output);
         env:
           NEW_BRANCH:  ${{ env.new_branch }}
