@@ -5,10 +5,11 @@ const path = require('path');
 const { Octokit } = require('@octokit/rest');
 const { exit } = require('process');
 
+console.log('Starting GitHub stars generation script.');
+
+
 async function getGitHubStars(octokit, url) {
     try {
-
-
         const githubUrl = 'https://github.com/';
         const regex = /^(?<owner>[a-zA-Z\d][a-zA-Z\d\.\-\_]+)\/(?<repo>[a-zA-Z\d][a-zA-Z\d\.\-\_]+).*$/;
 
@@ -28,7 +29,7 @@ async function getGitHubStars(octokit, url) {
 
         return response.data.stargazers_count;
     } catch (error) {
-        console.log("Error fetching stars for repo.");
+        console.log("Error fetching stars for repo: ", error); //more verbose
         return 0;
     }
 }
@@ -40,8 +41,10 @@ async function readHomepage(manifestFile) {
 }
 
 async function main(vcpkgDir, destDir, githubToken) {
+    console.log(`Using GitHub Token: ${githubToken.substring(0, 4)}...`);
+
     if (githubToken.length == 0) {
-        console.log('Skipping GitHub stars');
+        console.log('Skipping GitHub stars due to missing token');
         return;
     }
 
@@ -65,15 +68,22 @@ async function main(vcpkgDir, destDir, githubToken) {
 const VCPKG_ROOT = 2;
 const GITHUB_PAT = 3;
 const argc = process.argv.length;
-if (argc < 3 || argc > 4) {
+
+// Check for minimum argument count (vcpkg-root directory)
+if (argc < 3) {
     console.log('Usage: node generateGitHubStars.js <vcpkg-root> [GITHUB_PAT]');
     exit(1);
 }
 
 const vcpkgDir = process.argv[VCPKG_ROOT];
 const destDir = path.dirname(__dirname);
+
+// Use command-line argument for GitHub PAT if provided, otherwise use GITHUB_TOKEN environment variable
 let githubToken = '';
 if (argc > GITHUB_PAT) {
     githubToken = process.argv[GITHUB_PAT];
+} else {
+    githubToken = process.env.GITHUB_TOKEN || '';
 }
+
 main(vcpkgDir, destDir, githubToken);
